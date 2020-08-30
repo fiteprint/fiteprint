@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <ul class="list">
+    <template id="item-template">
+      <li class="item">
+        <div class="title ellipsis"></div>
+        <div class="meta ellipsis">
+          <span class="time"></span>
+          <span> · </span>
+          <span class="url"></span>
+        </div>
+      </li>
+    </template>
+    <div class="empty-item"></div>
+  </ul>
+  <div class="ctrl-box">
+    <input type="text" spellcheck="false" class="filter-input">
+  </div>
+  <script src="./ga.js"></script>
+  <script src="./main.js"></script>
+</body>
+</html>

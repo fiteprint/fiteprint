@@ -1,0 +1,35 @@
+{
+  "extensionName": {
+    "message": "站内足迹 - 当前网站浏览历史"
+  },
+  "extensionShortName": {
+    "message": "站内足迹"
+  },
+  "extensionDescription": {
+    "message": "查看你在当前网站的浏览历史"
+  },
+  "popupTitle": {
+    "message": "查看你在当前网站的浏览历史"
+  },
+  "noTitle": {
+    "message": "无标题"
+  },
+  "justNow": {
+    "message": "刚刚"
+  },
+  "minutesAgo": {
+    "message": "分钟前"
+  },
+  "hoursAgo": {
+    "message": "小时前"
+  },
+  "noBrowsingHistory": {
+    "message": "没有浏览历史"
+  },
+  "filter": {
+    "message": "筛选"
+  },
+  "filterItems": {
+    "message": "筛选历史记录"
+  }
+}

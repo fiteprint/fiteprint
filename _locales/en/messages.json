@@ -1,0 +1,35 @@
+{
+  "extensionName": {
+    "message": "Fiteprint - Browsing history of current site"
+  },
+  "extensionShortName": {
+    "message": "Fiteprint"
+  },
+  "extensionDescription": {
+    "message": "View your browsing history of current site."
+  },
+  "popupTitle": {
+    "message": "View your browsing history of current site."
+  },
+  "noTitle": {
+    "message": "no title"
+  },
+  "justNow": {
+    "message": "just now"
+  },
+  "minutesAgo": {
+    "message": "m"
+  },
+  "hoursAgo": {
+    "message": "h"
+  },
+  "noBrowsingHistory": {
+    "message": "No browsing history"
+  },
+  "filter": {
+    "message": "filter"
+  },
+  "filterItems": {
+    "message": "filter items"
+  }
+}
