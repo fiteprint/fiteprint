@@ -1,4 +1,5 @@
-# Fiteprint
+# Fiteprint - 站内足迹
 
-> A Chrome extension for Viewing your browsing history of current site.
+这是个 Chrome 浏览器扩展程序，用于查看你在当前网站的浏览历史，提供在数千条历史记录中快速定位和跳转的能力。
 
+![运行截图](main.png)
