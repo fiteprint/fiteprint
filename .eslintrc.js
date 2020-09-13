@@ -11,7 +11,8 @@ module.exports = {
     'plugin:jest/recommended',
   ],
   rules: {
-    'semi': ['error', 'always'],
+    'semi': 'off',
+    '@typescript-eslint/semi': ['error', 'always'],
     'indent': ['error', 2],
     'space-before-function-paren': ['error', 'never'],
     'space-before-blocks': ['error', 'always'],

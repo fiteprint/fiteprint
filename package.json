@@ -16,6 +16,7 @@
     "eslint-loader": "^4.0.2",
     "eslint-plugin-jest": "^24.0.1",
     "jest": "^26.4.2",
+    "lit-element": "^2.4.0",
     "ts-loader": "^8.0.3",
     "typescript": "^4.0.2",
     "webpack": "^4.44.1",
@@ -28,5 +29,6 @@
     "build": "webpack --config conf/webpack.prod.config.js",
     "test": "webpack --config conf/webpack.test.config.js && jest --testPathPattern=dist/test",
     "lint": "eslint src --ext .ts"
-  }
+  },
+  "dependencies": {}
 }
