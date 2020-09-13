@@ -1,6 +1,6 @@
-const { Config } = require('webpack-config')
-const CopyPlugin = require('copy-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const { Config } = require('webpack-config');
+const CopyPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = new Config().merge({
   entry: {
@@ -14,6 +14,12 @@ module.exports = new Config().merge({
   devtool: 'inline-source-map',
   module: {
     rules: [
+      {
+        enforce: 'pre',
+        test: /\.ts$/,
+        use: 'eslint-loader',
+        exclude: /node_modules/,
+      },
       {
         test: /\.ts$/,
         use: 'ts-loader',
@@ -38,4 +44,4 @@ module.exports = new Config().merge({
     }),
     new CleanWebpackPlugin(),
   ],
-})
+});

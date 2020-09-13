@@ -1,6 +1,6 @@
-const path = require('path')
-const { Config } = require('webpack-config')
-const WebpackWatchPlugin = require('webpack-watch-files-plugin').default
+const path = require('path');
+const { Config } = require('webpack-config');
+const WebpackWatchPlugin = require('webpack-watch-files-plugin').default;
 
 module.exports = new Config().extend('conf/webpack.base.config.js').merge({
   mode: 'development',
@@ -13,4 +13,4 @@ module.exports = new Config().extend('conf/webpack.base.config.js').merge({
       files: ['src/**/*.{html,json,png}'],
     }),
   ],
-})
+});

@@ -1,6 +1,6 @@
-const path = require('path')
-const glob = require('glob')
-const { Config } = require('webpack-config')
+const path = require('path');
+const glob = require('glob');
+const { Config } = require('webpack-config');
 
 module.exports = new Config().extend('conf/webpack.base.config.js').merge({
   mode: 'development',
@@ -13,4 +13,4 @@ module.exports = new Config().extend('conf/webpack.base.config.js').merge({
     path: path.resolve(__dirname, '../dist/test'),
     filename: '[name].js',
   },
-})
+});
