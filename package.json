@@ -1,0 +1,26 @@
+{
+  "name": "fiteprint",
+  "description": "A Chrome extension for viewing your browsing history of current site.",
+  "version": "1.0.0",
+  "author": "wildseeder",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "@types/chrome": "^0.0.123",
+    "@types/jest": "^26.0.13",
+    "@types/tapable": "^1.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^6.1.0",
+    "jest": "^26.4.2",
+    "ts-loader": "^8.0.3",
+    "typescript": "^4.0.2",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-config": "^7.5.0",
+    "webpack-watch-files-plugin": "^1.1.0"
+  },
+  "scripts": {
+    "dev": "webpack --config conf/webpack.dev.config.js",
+    "build": "webpack --config conf/webpack.prod.config.js",
+    "test": "webpack --config conf/webpack.test.config.js && jest --testPathPattern=dist/test"
+  }
+}

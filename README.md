@@ -1,5 +1,9 @@
-# Fiteprint - 站内足迹
+# Fiteprint
 
-这是个 Chrome 浏览器扩展程序，用于查看你在当前网站的浏览历史，提供在数千条历史记录中快速定位和跳转的能力。
+```bash
+yarn dev
 
-![运行截图](main.png)
+yarn build
+
+yarn test
+```
