@@ -4,9 +4,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = new Config().merge({
   entry: {
-    popup: './src/popup/index.ts',
+    popup: './src/popup/index.tsx',
     background: './src/background/index.ts',
-    options: './src/options/index.ts',
+    options: './src/options/index.tsx',
   },
   output: {
     filename: '[name]/index.js',
@@ -16,19 +16,25 @@ module.exports = new Config().merge({
     rules: [
       {
         enforce: 'pre',
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         use: 'eslint-loader',
         exclude: /node_modules/,
       },
       {
-        test: /\.ts$/,
-        use: 'ts-loader',
+        test: /\.tsx?$/,
+        use: 'awesome-typescript-loader',
+        exclude: /node_modules/,
+      },
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        use: 'source-map-loader',
         exclude: /node_modules/,
       },
     ],
   },
   resolve: {
-    extensions: ['.ts'],
+    extensions: ['.js', '.ts', '.tsx'],
   },
   plugins: [
     new CopyPlugin({
