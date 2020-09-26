@@ -1,17 +1,17 @@
-import { hashCode } from './string';
+import { getHashCode } from './string';
 
-describe('hashCode', () => {
+describe('getHashCode', () => {
 
   test('empty string', () => {
-    expect(hashCode('')).toBe(0);
+    expect(getHashCode('')).toBe(0);
   });
 
   test('different strings', () => {
-    expect(hashCode('a')).not.toEqual(hashCode('b'));
+    expect(getHashCode('a')).not.toEqual(getHashCode('b'));
   });
 
   test('same strings', () => {
-    expect(hashCode('a')).toEqual(hashCode('a'));
+    expect(getHashCode('a')).toEqual(getHashCode('a'));
   });
 
 });

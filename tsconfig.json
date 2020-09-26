@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
+    "baseUrl": "./src",
+    "outDir": "./dist",
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "sourceMap": true,
     "noImplicitAny": true,
@@ -11,6 +13,6 @@
     "jsx": "react"
   },
   "include": [
-    "src/**/*"
+    "./src/**/*"
   ]
 }

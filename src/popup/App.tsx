@@ -1,12 +1,20 @@
-import * as React from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect, useCallback } from 'react';
 
-const Title = styled.h1`
-  color: blue;
-`;
+import { getVisitedItems } from 'background/bridge';
+import VisitedItemList from './components/VisitedItemList';
 
 export default function App(): JSX.Element {
+  const [items, setItems] = useState([]);
+
+  const init = useCallback(async() => {
+    setItems(await getVisitedItems());
+  }, []);
+
+  useEffect(() => {
+    init();
+  }, []);
+
   return (
-    <Title>Hello</Title>
+    <VisitedItemList items={items} showIcon={false} />
   );
 }

@@ -1,8 +1,8 @@
-export function hashCode(str: string): number {
-  let hash = 0;
+export function getHashCode(str: string): number {
+  let code = 0;
   for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) - hash) + str.charCodeAt(i);
-    hash = hash & hash;
+    code = ((code << 5) - code) + str.charCodeAt(i);
+    code = code & code;
   }
-  return hash;
+  return code;
 }

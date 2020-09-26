@@ -1,0 +1,21 @@
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  outline: none;
+}
+
+body, input {
+  font-size: 12px;
+  font-family: sans-serif;
+  line-height: 1.2;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 400px;
+}

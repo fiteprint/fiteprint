@@ -1,6 +1,7 @@
 const { Config } = require('webpack-config');
 const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = new Config().merge({
   entry: {
@@ -22,7 +23,7 @@ module.exports = new Config().merge({
       },
       {
         test: /\.tsx?$/,
-        use: 'awesome-typescript-loader',
+        use: 'ts-loader',
         exclude: /node_modules/,
       },
       {
@@ -31,10 +32,16 @@ module.exports = new Config().merge({
         use: 'source-map-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+        exclude: /node_modules/,
+      },
     ],
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
+    plugins: [new TsconfigPathsPlugin()],
   },
   plugins: [
     new CopyPlugin({
