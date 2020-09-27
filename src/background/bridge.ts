@@ -1,15 +1,7 @@
-import * as background from '.';
+import { CMD_GET_VISITED_ITEMS, VisitedItem } from '.';
 
-export const CMD_GET_VISITED_ITEMS = 'getVisitedItems';
-
-chrome.runtime.onMessage.addListener(({ cmd }, _, sendResponse) => {
-  if (cmd === CMD_GET_VISITED_ITEMS) {
-    sendResponse(background.getVisitedItems());
-  }
-});
-
-export function getVisitedItems(): Promise<background.VisitedItem[]> {
-  return new Promise<background.VisitedItem[]>(resolve => {
+export function getVisitedItems(): Promise<VisitedItem[]> {
+  return new Promise<VisitedItem[]>(resolve => {
     chrome.runtime.sendMessage({
       cmd: CMD_GET_VISITED_ITEMS,
     }, resolve);

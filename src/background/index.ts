@@ -9,6 +9,8 @@ export interface VisitedItem {
   lastVisitTime: number;
 }
 
+export const CMD_GET_VISITED_ITEMS = 'getVisitedItems';
+
 const UPDATE_INTERVAL = 1000;
 const REFRESH_DURATION = 1000 * 60 * 5;
 
@@ -28,6 +30,13 @@ chrome.tabs.onUpdated.addListener(() => {
   active = true;
 });
 
+chrome.runtime.onMessage.addListener(({ cmd }, _, sendResponse) => {
+  if (cmd === CMD_GET_VISITED_ITEMS) {
+    getVisitedItems().then(sendResponse);
+    return true;
+  }
+});
+
 const update = async() => {
   if (active) {
     active = false;
@@ -38,10 +47,6 @@ const update = async() => {
   setTimeout(update, UPDATE_INTERVAL);
 };
 update();
-
-export function getVisitedItems(): VisitedItem[] {
-  return visitedItems;
-}
 
 async function refreshVistedItems(startTime: number) {
   const newItems = await getHistory(startTime);
@@ -87,4 +92,26 @@ function toVisitedItem(item: chrome.history.HistoryItem): VisitedItem {
 
 function getVisitedItemKey(title: string, url: string): number {
   return getHashCode(title + getUrlWithPathOnly(url));
+}
+
+async function getVisitedItems(): Promise<VisitedItem[]> {
+  const tab = await getCurrentTab();
+  const domain = isChromeUrl(tab.url) ? '' : getUrlDomain(tab.url);
+  if (!domain) {
+    return visitedItems;
+  }
+  return visitedItems.filter(item => item.domain === domain);
+}
+
+function getCurrentTab(): Promise<chrome.tabs.Tab> {
+  return new Promise(resolve => {
+    chrome.tabs.query({
+      currentWindow: true,
+      active: true,
+    }, tabs => resolve(tabs[0]));
+  });
+}
+
+function isChromeUrl(url: string): boolean {
+  return /^chrome:\/\//.test(url);
 }
