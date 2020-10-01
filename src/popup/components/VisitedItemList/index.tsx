@@ -6,8 +6,13 @@ export { ItemData };
 
 interface Props {
   items: ItemData[];
+  total: number;
   showIcon: boolean;
 }
+
+const ITEM_HEIGHT = 50;
+const MAX_HEIGHT = 400;
+const WIDTH = 400;
 
 export default function VisitedItemList(props: Props): JSX.Element {
   const rowRenderer: ListRowRenderer = ({ key, index, style }) => (
@@ -17,14 +22,15 @@ export default function VisitedItemList(props: Props): JSX.Element {
   );
   return (
     <List
-      width={400}
-      height={500}
-      rowHeight={50}
+      width={WIDTH}
+      height={Math.min(MAX_HEIGHT, props.total * ITEM_HEIGHT)}
+      rowHeight={ITEM_HEIGHT}
       rowCount={props.items.length}
       rowRenderer={rowRenderer}
       style={{
         outline: 0,
         padding: '8px 0',
+        boxSizing: 'content-box',
       }}
     />
   );

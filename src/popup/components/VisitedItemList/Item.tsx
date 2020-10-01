@@ -45,6 +45,7 @@ interface IconProps {
 }
 
 const Icon = styled.img<IconProps>`
+  display: inline-block;
   margin-right: ${({ adjustMargin }) => adjustMargin ? '' : '0.5em'};
   width: 1.25em;
   vertical-align: text-bottom;

@@ -20,6 +20,7 @@ module.exports = {
   rules: {
     'semi': 'off',
     '@typescript-eslint/semi': ['error', 'always'],
+    '@typescript-eslint/no-explicit-any': 'off',
     'indent': ['error', 2],
     'space-before-function-paren': ['error', 'never'],
     'space-before-blocks': ['error', 'always'],

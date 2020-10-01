@@ -3,12 +3,17 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { getUrlDomain, isChromeUrl, getUrlWithoutOrigin } from 'common/url';
 import { getVisitedItems } from 'background/bridge';
 import VisitedItemList, { ItemData } from './components/VisitedItemList';
+import FilterBar from './components/FilterBar';
 
 const TITLE_SPLITER_REG = /(\s*[|\-·_/]\s*)/;
+const FILTER_DELAY = 300;
 
 export default function App(): JSX.Element {
   const [items, setItems] = useState<ItemData[]>([]);
+  const [filterItems, setFilterItems] = useState<ItemData[]>([]);
   const [shouldShowIcon, setShouldShowIcon] = useState(false);
+  const [domain, setDomain] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const init = useCallback(async() => {
     const tab = await getCurrentTab();
@@ -29,15 +34,43 @@ export default function App(): JSX.Element {
         tabIndex: tabMap[item.url] ? tabMap[item.url].index : -1,
       }));
     setItems(items);
+    setFilterItems(items);
     setShouldShowIcon(!domain);
+    setDomain(domain);
+    setLoading(false);
   }, []);
 
   useEffect(() => {
     init();
   }, []);
 
+  const handleInput = debounce((value: string) => {
+    const keyword = value.toLowerCase();
+    if (keyword) {
+      setFilterItems(items.filter(item =>
+        item.shortTitle.toLowerCase().includes(keyword)
+        || item.shortUrl.toLowerCase().includes(keyword)
+      ));
+    } else {
+      setFilterItems(items);
+    }
+  }, FILTER_DELAY);
+
   return (
-    <VisitedItemList items={items} showIcon={shouldShowIcon} />
+    <>
+      <VisitedItemList
+        items={filterItems}
+        total={items.length}
+        showIcon={shouldShowIcon}
+      />
+      {items.length > 0 &&
+        <FilterBar
+          domain={domain}
+          loading={loading}
+          onInput={handleInput}
+        />
+      }
+    </>
   );
 }
 
@@ -86,4 +119,12 @@ function removeTitleSuffix(title: string, suffix: string): string {
     return title.slice(0, -suffix.length);
   }
   return title;
+}
+
+function debounce(fn: (...args: any[]) => void, delay: number) {
+  let id = 0;
+  return (...args: any[]) => {
+    clearTimeout(id);
+    id = window.setTimeout(() => fn(...args), delay);
+  };
 }
