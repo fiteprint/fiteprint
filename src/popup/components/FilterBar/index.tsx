@@ -64,6 +64,7 @@ export default function FilterBar(props: Props): JSX.Element {
   return (
     <Box>
       <Input
+        spellCheck={false}
         placeholder={placeholder}
         passive={passive}
         onInput={handleInput}
