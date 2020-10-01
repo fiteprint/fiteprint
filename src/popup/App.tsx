@@ -58,15 +58,16 @@ export default function App(): JSX.Element {
 
   return (
     <>
-      <VisitedItemList
-        items={filterItems}
-        total={items.length}
-        showIcon={shouldShowIcon}
-      />
-      {items.length > 0 &&
+      {!loading &&
+        <VisitedItemList
+          items={filterItems}
+          total={items.length}
+          showIcon={shouldShowIcon}
+        />
+      }
+      {!loading && items.length > 0 &&
         <FilterBar
           domain={domain}
-          loading={loading}
           onInput={handleInput}
         />
       }

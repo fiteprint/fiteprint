@@ -3,7 +3,6 @@ import styled, { css } from 'styled-components';
 
 interface Props {
   domain: string;
-  loading: boolean;
   onInput: (value: string) => void;
 }
 
@@ -35,15 +34,11 @@ const Input = styled.input<InputProps>`
 export default function FilterBar(props: Props): JSX.Element {
   const [placeholder, setPlaceholder] = useState('');
   useEffect(() => {
-    if (props.loading) {
-      setPlaceholder('');
-      return;
-    }
     const placeholder = props.domain
       ? chrome.i18n.getMessage('filter') + ' ' + props.domain
       : chrome.i18n.getMessage('filterItems');
     setPlaceholder(placeholder);
-  }, [props.domain, props.loading]);
+  }, [props.domain]);
 
   const [passive, setPassive] = useState(false);
 
