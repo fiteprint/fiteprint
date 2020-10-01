@@ -1,9 +1,16 @@
-import { CMD_GET_VISITED_ITEMS, VisitedItem } from '.';
+import {
+  CMD_GET_VISITED_ITEMS,
+  VisitedItem,
+  Message,
+  GetVisitedItemsParams,
+} from '.';
 
-export function getVisitedItems(): Promise<VisitedItem[]> {
+export function getVisitedItems(domain?: string): Promise<VisitedItem[]> {
   return new Promise<VisitedItem[]>(resolve => {
-    chrome.runtime.sendMessage({
+    const msg: Message<GetVisitedItemsParams> = {
       cmd: CMD_GET_VISITED_ITEMS,
-    }, resolve);
+      params: { domain },
+    };
+    chrome.runtime.sendMessage(msg, resolve);
   });
 }

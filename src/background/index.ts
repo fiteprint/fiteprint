@@ -1,5 +1,5 @@
-import { getHashCode } from './string';
-import { getUrlDomain, getUrlWithPathOnly } from './url';
+import { getHashCode } from 'common/string';
+import { getUrlDomain, getUrlWithPathOnly } from 'common/url';
 
 export interface VisitedItem {
   key: number;
@@ -7,6 +7,15 @@ export interface VisitedItem {
   title: string;
   url: string;
   lastVisitTime: number;
+}
+
+export interface Message<T> {
+  cmd: string;
+  params?: T;
+}
+
+export interface GetVisitedItemsParams {
+  domain?: string;
 }
 
 export const CMD_GET_VISITED_ITEMS = 'getVisitedItems';
@@ -30,12 +39,14 @@ chrome.tabs.onUpdated.addListener(() => {
   active = true;
 });
 
-chrome.runtime.onMessage.addListener(({ cmd }, _, sendResponse) => {
-  if (cmd === CMD_GET_VISITED_ITEMS) {
-    getVisitedItems().then(sendResponse);
-    return true;
+chrome.runtime.onMessage.addListener(
+  ({ cmd, params }: Message<GetVisitedItemsParams>, _, sendResponse) => {
+    if (cmd === CMD_GET_VISITED_ITEMS) {
+      getVisitedItems(params.domain).then(sendResponse);
+      return true;
+    }
   }
-});
+);
 
 const update = async() => {
   if (active) {
@@ -62,7 +73,7 @@ async function refreshVistedItems(startTime: number) {
   }
   if (startTime) {
     for (const item of visitedItems) {
-      if (!newKeyItemMap[item.key]) {
+      if (item.lastVisitTime < startTime) {
         finalItems.push(item);
       }
     }
@@ -94,24 +105,9 @@ function getVisitedItemKey(title: string, url: string): number {
   return getHashCode(title + getUrlWithPathOnly(url));
 }
 
-async function getVisitedItems(): Promise<VisitedItem[]> {
-  const tab = await getCurrentTab();
-  const domain = isChromeUrl(tab.url) ? '' : getUrlDomain(tab.url);
+async function getVisitedItems(domain?: string): Promise<VisitedItem[]> {
   if (!domain) {
     return visitedItems;
   }
   return visitedItems.filter(item => item.domain === domain);
-}
-
-function getCurrentTab(): Promise<chrome.tabs.Tab> {
-  return new Promise(resolve => {
-    chrome.tabs.query({
-      currentWindow: true,
-      active: true,
-    }, tabs => resolve(tabs[0]));
-  });
-}
-
-function isChromeUrl(url: string): boolean {
-  return /^chrome:\/\//.test(url);
 }
