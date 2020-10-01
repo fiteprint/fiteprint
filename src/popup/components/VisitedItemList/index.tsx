@@ -2,6 +2,7 @@ import React from 'react';
 import { List, ListRowRenderer } from 'react-virtualized';
 
 import Item, { ItemData } from './Item';
+export { ItemData };
 
 interface Props {
   items: ItemData[];

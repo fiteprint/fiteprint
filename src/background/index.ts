@@ -6,6 +6,7 @@ export interface VisitedItem {
   domain: string;
   title: string;
   url: string;
+  urlKey: string;
   lastVisitTime: number;
 }
 
@@ -62,8 +63,10 @@ update();
 async function refreshVistedItems(startTime: number) {
   const newItems = await getHistory(startTime);
   const newKeyItemMap: { [key: number]: VisitedItem } = {};
+  const newUrlKeyItemMap: { [key: string]: VisitedItem } = {};
   for (const item of newItems) {
     newKeyItemMap[item.key] = item;
+    newUrlKeyItemMap[item.urlKey] = item;
   }
   const finalItems: VisitedItem[] = [];
   for (const item of newItems) {
@@ -73,7 +76,7 @@ async function refreshVistedItems(startTime: number) {
   }
   if (startTime) {
     for (const item of visitedItems) {
-      if (item.lastVisitTime < startTime) {
+      if (!newUrlKeyItemMap[item.urlKey]) {
         finalItems.push(item);
       }
     }
@@ -92,17 +95,15 @@ function getHistory(startTime: number): Promise<VisitedItem[]> {
 }
 
 function toVisitedItem(item: chrome.history.HistoryItem): VisitedItem {
+  const urlKey = getUrlWithPathOnly(item.url);
   return {
-    key: getVisitedItemKey(item.title, item.url),
+    key: getHashCode(item.title + urlKey),
     domain: getUrlDomain(item.url),
     title: item.title,
     url: item.url,
+    urlKey,
     lastVisitTime: item.lastVisitTime,
   };
-}
-
-function getVisitedItemKey(title: string, url: string): number {
-  return getHashCode(title + getUrlWithPathOnly(url));
 }
 
 async function getVisitedItems(domain?: string): Promise<VisitedItem[]> {
