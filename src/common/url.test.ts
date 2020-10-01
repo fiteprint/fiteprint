@@ -2,7 +2,8 @@ import {
   getUrlDomain,
   isChromeUrl,
   getUrlWithPathOnly,
-  getOrigin,
+  getUrlOrigin,
+  getUrlWithoutOrigin,
 } from './url';
 
 describe('getUrlDomain', () => {
@@ -45,14 +46,26 @@ describe('getUrlWithPathOnly', () => {
 
 });
 
-describe('getOrigin', () => {
+describe('getUrlOrigin', () => {
 
   test('domain', () => {
-    expect(getOrigin('https://a.b/xxx?xxx')).toBe('https://a.b');
+    expect(getUrlOrigin('https://a.b/xxx?xxx')).toBe('https://a.b');
   });
 
   test('ip', () => {
-    expect(getOrigin('http://1.1.1.1/xxx?xxx')).toBe('http://1.1.1.1');
+    expect(getUrlOrigin('http://1.1.1.1/xxx?xxx')).toBe('http://1.1.1.1');
+  });
+
+});
+
+describe('getUrlWithoutOrigin', () => {
+
+  test('has slash', () => {
+    expect(getUrlWithoutOrigin('https://a.b/?xxx')).toBe('/?xxx');
+  });
+
+  test('no slash', () => {
+    expect(getUrlWithoutOrigin('https://a.b?xxx')).toBe('/?xxx');
   });
 
 });

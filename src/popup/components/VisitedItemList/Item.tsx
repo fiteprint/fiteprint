@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 
-import { getOrigin } from 'common/url';
+import { getUrlOrigin } from 'common/url';
 
 export interface ItemData {
   key: number;
   title: string;
+  shortTitle: string;
   url: string;
+  shortUrl: string;
   tabIndex: number;
   lastVisitTime: number;
 }
@@ -17,6 +19,7 @@ interface Props {
 }
 
 const HALF_SPACE_CHARS = '【（《“‘';
+const FAVICON_BASE_URL = 'chrome://favicon/size/16@2x/';
 
 const ellipsis = css`
   white-space: nowrap;
@@ -68,23 +71,28 @@ const Meta = styled.div`
 export default function Item({ item, showIcon }: Props): JSX.Element {
   const [shouldAdjustMargin, setShouldAdjustMargin] = useState(false);
   useEffect(() => {
-    setShouldAdjustMargin(shouldAdjustTitleMargin(item.title));
-  }, [item.title]);
+    setShouldAdjustMargin(shouldAdjustTitleMargin(item.shortUrl));
+  }, [item.shortUrl]);
 
   const [formattedUrl, setFormattedUrl] = useState('');
   useEffect(() => {
-    setFormattedUrl(decodeUrlForShowing(item.url));
-  }, [item.url]);
+    setFormattedUrl(decodeUrlForShowing(item.shortUrl));
+  }, [item.shortUrl]);
 
   const [formattedTitle, setFormattedTitle] = useState('');
   useEffect(() => {
-    setFormattedTitle(item.title || chrome.i18n.getMessage('noTitle'));
-  }, [item.url]);
+    setFormattedTitle(item.shortTitle || chrome.i18n.getMessage('noTitle'));
+  }, [item.shortTitle]);
 
   const [formattedDate, setFormattedDate] = useState('');
   useEffect(() => {
     setFormattedDate(dateFromNow(new Date(item.lastVisitTime)));
   }, [item.lastVisitTime]);
+
+  const [iconUrl, setIconUrl] = useState('');
+  useEffect(() => {
+    setIconUrl(getFaviconUrl(item.url));
+  }, [item.url]);
 
   const handleClick = () => {
     if (item.tabIndex > -1) {
@@ -100,13 +108,15 @@ export default function Item({ item, showIcon }: Props): JSX.Element {
   };
 
   return (
-    <Box onClick={handleClick}>
+    <Box
+      onClick={handleClick}
+      title={item.title + '\n' + decodeUrlForShowing(item.url)}>
       <Title
         highlight={item.tabIndex > -1}
         adjustMargin={!showIcon && shouldAdjustMargin}>
         {showIcon &&
           <Icon
-            src={getIconUrl(item.url)}
+            src={iconUrl}
             adjustMargin={shouldAdjustMargin}
           />
         }
@@ -144,8 +154,8 @@ function prefixZero(val: number, size: number): string {
   return (Array(size).join('0') + val).slice(-size);
 }
 
-function getIconUrl(url: string): string {
-  return 'chrome://favicon/size/16@2x/' + getOrigin(url);
+function getFaviconUrl(url: string): string {
+  return FAVICON_BASE_URL + getUrlOrigin(url);
 }
 
 function shouldAdjustTitleMargin(title: string): boolean {
