@@ -7,7 +7,6 @@ module.exports = new Config().merge({
   entry: {
     popup: './src/popup/index.tsx',
     background: './src/background/index.ts',
-    options: './src/options/index.tsx',
   },
   output: {
     filename: '[name]/index.js',
