@@ -58,7 +58,7 @@ export default function VisitedItemList(props: Props): JSX.Element {
       break;
     case 'Enter':
       event.preventDefault();
-      if (highlightIndex >= 0 && highlightIndex < props.items.length) {
+      if (props.items[highlightIndex]) {
         openItem(props.items[highlightIndex]);
       }
       break;
