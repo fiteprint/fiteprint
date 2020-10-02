@@ -16,6 +16,7 @@ export interface Message<T> {
 
 export interface GetVisitedItemsParams {
   domain?: string;
+  limit?: number;
 }
 
 export const CMD_GET_VISITED_ITEMS = 'getVisitedItems';
@@ -42,7 +43,7 @@ chrome.tabs.onUpdated.addListener(() => {
 chrome.runtime.onMessage.addListener(
   ({ cmd, params }: Message<GetVisitedItemsParams>, _, sendResponse) => {
     if (cmd === CMD_GET_VISITED_ITEMS) {
-      getVisitedItems(params.domain).then(sendResponse);
+      getVisitedItems(params.domain, params.limit).then(sendResponse);
       return true;
     }
   }
@@ -103,9 +104,13 @@ function toVisitedItem(item: chrome.history.HistoryItem): VisitedItem {
   };
 }
 
-async function getVisitedItems(domain?: string): Promise<VisitedItem[]> {
-  if (!domain) {
-    return visitedItems;
+async function getVisitedItems(domain?: string, limit?: number): Promise<VisitedItem[]> {
+  let items = visitedItems;
+  if (domain) {
+    items = items.filter(item => item.domain === domain);
   }
-  return visitedItems.filter(item => item.domain === domain);
+  if (limit) {
+    items = items.slice(0, limit);
+  }
+  return items;
 }

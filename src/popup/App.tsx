@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import styled from 'styled-components';
 
 import { getUrlDomain, isChromeUrl, getUrlWithoutOrigin } from 'common/url';
 import { getVisitedItems } from 'background/bridge';
@@ -7,10 +8,15 @@ import FilterBar from './components/FilterBar';
 
 const TITLE_SPLITER_REG = /(\s*[|\-·_/]\s*)/;
 const FILTER_DELAY = 300;
+const MAX_HEIGHT = 557;
+
+const Placeholder = styled.div`
+  height: ${MAX_HEIGHT}px;
+`;
 
 export default function App(): JSX.Element {
   const [items, setItems] = useState<ItemData[]>([]);
-  const [filterItems, setFilterItems] = useState<ItemData[]>([]);
+  const [filteredItems, setFilteredItems] = useState<ItemData[]>([]);
   const [shouldShowIcon, setShouldShowIcon] = useState(false);
   const [domain, setDomain] = useState('');
   const [loading, setLoading] = useState(true);
@@ -30,11 +36,11 @@ export default function App(): JSX.Element {
       .filter(item => item.url !== tab.url)
       .map(item => Object.assign({}, item, {
         shortTitle: removeTitleSuffix(item.title, suffix),
-        shortUrl: (domain ? getUrlWithoutOrigin(item.url): item.url) || domain,
+        shortUrl: getShortUrl(item.url, domain),
         tabIndex: tabMap[item.url] ? tabMap[item.url].index : -1,
       }));
     setItems(items);
-    setFilterItems(items);
+    setFilteredItems(items);
     setShouldShowIcon(!domain);
     setDomain(domain);
     setLoading(false);
@@ -45,22 +51,14 @@ export default function App(): JSX.Element {
   }, []);
 
   const handleInput = debounce((value: string) => {
-    const keyword = value.toLowerCase();
-    if (keyword) {
-      setFilterItems(items.filter(item =>
-        item.shortTitle.toLowerCase().includes(keyword)
-        || item.shortUrl.toLowerCase().includes(keyword)
-      ));
-    } else {
-      setFilterItems(items);
-    }
+    setFilteredItems(filterItems(items, value));
   }, FILTER_DELAY);
 
   return (
     <>
       {!loading &&
         <VisitedItemList
-          items={filterItems}
+          items={filteredItems}
           total={items.length}
           showIcon={shouldShowIcon}
         />
@@ -71,8 +69,27 @@ export default function App(): JSX.Element {
           onInput={handleInput}
         />
       }
+      {loading && !domain &&
+        <Placeholder />
+      }
     </>
   );
+}
+
+function filterItems(items: ItemData[], value: string): ItemData[] {
+  const keyword = toSearchable(value);
+  if (!keyword) {
+    return items;
+  }
+  return items.filter(item => {
+    const title = toSearchable(item.shortTitle);
+    const url = toSearchable(item.shortUrl);
+    return title.includes(keyword) || url.includes(keyword);
+  });
+}
+
+function toSearchable(str: string): string {
+  return str.replace(/\s+/g, '').toLowerCase();
 }
 
 function getDomain(url: string): string {
@@ -120,6 +137,10 @@ function removeTitleSuffix(title: string, suffix: string): string {
     return title.slice(0, -suffix.length);
   }
   return title;
+}
+
+function getShortUrl(url: string, domain: string): string {
+  return (domain ? getUrlWithoutOrigin(url) : url).replace(/\/$/, '') || domain;
 }
 
 function debounce(fn: (...args: any[]) => void, delay: number) {

@@ -56,6 +56,10 @@ export default function FilterBar(props: Props): JSX.Element {
     setPassive(true);
   };
 
+  const handleBlur = () => {
+    input.current.focus();
+  };
+
   return (
     <Box>
       <Input
@@ -63,6 +67,7 @@ export default function FilterBar(props: Props): JSX.Element {
         placeholder={placeholder}
         passive={passive}
         onInput={handleInput}
+        onBlur={handleBlur}
         onClick={handleClick}
         ref={input}
       />

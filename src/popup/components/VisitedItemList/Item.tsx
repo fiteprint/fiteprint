@@ -16,6 +16,8 @@ export interface ItemData {
 interface Props {
   item: ItemData;
   showIcon: boolean;
+  highlight: boolean;
+  onClick: (item: ItemData) => void;
 }
 
 const HALF_SPACE_CHARS = '【（《“‘';
@@ -27,12 +29,17 @@ const ellipsis = css`
   overflow: hidden;
 `;
 
-const Box = styled.div`
+interface BoxProps {
+  highlight: boolean;
+}
+
+const Box = styled.div<BoxProps>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0 10px;
   height: 100%;
+  background-color: ${({ highlight }) => highlight ? '#e9e9e9' : ''};
   box-sizing: border-box;
   cursor: pointer;
   &:hover {
@@ -69,21 +76,23 @@ const Meta = styled.div`
   ${ellipsis}
 `;
 
-export default function Item({ item, showIcon }: Props): JSX.Element {
+export default function Item(props: Props): JSX.Element {
+  const { item, showIcon, highlight, onClick } = props;
+
   const [shouldAdjustMargin, setShouldAdjustMargin] = useState(false);
   useEffect(() => {
-    setShouldAdjustMargin(shouldAdjustTitleMargin(item.shortUrl));
-  }, [item.shortUrl]);
-
-  const [formattedUrl, setFormattedUrl] = useState('');
-  useEffect(() => {
-    setFormattedUrl(decodeUrlForShowing(item.shortUrl));
-  }, [item.shortUrl]);
+    setShouldAdjustMargin(shouldAdjustTitleMargin(item.shortTitle));
+  }, [item.shortTitle]);
 
   const [formattedTitle, setFormattedTitle] = useState('');
   useEffect(() => {
     setFormattedTitle(item.shortTitle || chrome.i18n.getMessage('noTitle'));
   }, [item.shortTitle]);
+
+  const [formattedUrl, setFormattedUrl] = useState('');
+  useEffect(() => {
+    setFormattedUrl(decodeUrlForShowing(item.shortUrl));
+  }, [item.shortUrl]);
 
   const [formattedDate, setFormattedDate] = useState('');
   useEffect(() => {
@@ -96,22 +105,14 @@ export default function Item({ item, showIcon }: Props): JSX.Element {
   }, [item.url]);
 
   const handleClick = () => {
-    if (item.tabIndex > -1) {
-      chrome.tabs.highlight({
-        tabs: item.tabIndex,
-      });
-      window.close();
-    } else {
-      chrome.tabs.create({
-        url: item.url,
-      });
-    }
+    onClick(item);
   };
 
   return (
     <Box
-      onClick={handleClick}
-      title={item.title + '\n' + decodeUrlForShowing(item.url)}>
+      highlight={highlight}
+      title={item.title + '\n' + decodeUrlForShowing(item.url)}
+      onClick={handleClick}>
       <Title
         highlight={item.tabIndex > -1}
         adjustMargin={!showIcon && shouldAdjustMargin}>
