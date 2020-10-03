@@ -43,17 +43,18 @@ export default function VisitedItemList(props: Props): JSX.Element {
   };
 
   const listener = (event: KeyboardEvent) => {
+    const offset = event.shiftKey ? 10 : 1;
     switch (event.key) {
     case 'ArrowDown':
       event.preventDefault();
       setHighlightIndex(index => {
-        return index < props.items.length - 1 ? index + 1 : index;
+        return Math.min(index + offset, props.items.length - 1);
       });
       break;
     case 'ArrowUp':
       event.preventDefault();
       setHighlightIndex(index => {
-        return index > 0 ? index - 1 : index;
+        return Math.max(index - offset, 0);
       });
       break;
     case 'Enter':
