@@ -140,7 +140,9 @@ function removeTitleSuffix(title: string, suffix: string): string {
 }
 
 function getShortUrl(url: string, domain: string): string {
-  return (domain ? getUrlWithoutOrigin(url) : url).replace(/\/$/, '') || domain;
+  let shortUrl = domain ? getUrlWithoutOrigin(url) : url;
+  shortUrl = shortUrl.replace(/^.*?\/\/(www\.)?|\/$/g, '') || domain;
+  return shortUrl;
 }
 
 function debounce(fn: (...args: any[]) => void, delay: number) {
