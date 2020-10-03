@@ -70,8 +70,7 @@ const Title = styled.div<TitleProps>`
 `;
 
 const Meta = styled.div`
-  margin-top: 5px;
-  font-size: 0.9em;
+  margin-top: 4px;
   color: #999;
   ${ellipsis}
 `;
@@ -141,12 +140,12 @@ function dateFromNow(date: Date): string {
 
   const hours = Math.floor(diff / (1000 * 60 * 60));
   if (hours) {
-    return hours + ' ' + chrome.i18n.getMessage('hoursAgo');
+    return hours + chrome.i18n.getMessage('hoursAgo');
   }
 
   const minutes = Math.floor(diff / (1000 * 60));
   if (minutes) {
-    return minutes + ' ' + chrome.i18n.getMessage('minutesAgo');
+    return minutes + chrome.i18n.getMessage('minutesAgo');
   }
 
   return chrome.i18n.getMessage('justNow');

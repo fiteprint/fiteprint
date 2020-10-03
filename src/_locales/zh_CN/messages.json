@@ -18,10 +18,10 @@
     "message": "刚刚"
   },
   "minutesAgo": {
-    "message": "分钟前"
+    "message": " 分钟前"
   },
   "hoursAgo": {
-    "message": "小时前"
+    "message": " 小时前"
   },
   "noBrowsingHistory": {
     "message": "没有浏览历史"
