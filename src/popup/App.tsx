@@ -77,19 +77,20 @@ export default function App(): JSX.Element {
 }
 
 function filterItems(items: ItemData[], value: string): ItemData[] {
-  const keyword = toSearchable(value);
-  if (!keyword) {
+  const keywords = value.toLowerCase().trim().split(/\s+/);
+  if (!keywords.length) {
     return items;
   }
   return items.filter(item => {
-    const title = toSearchable(item.shortTitle);
-    const url = toSearchable(item.shortUrl);
-    return title.includes(keyword) || url.includes(keyword);
+    const title = item.shortTitle.toLowerCase();
+    const url = item.shortUrl.toLowerCase();
+    for (const keyword of keywords) {
+      if (!title.includes(keyword) && !url.includes(keyword)) {
+        return false;
+      }
+    }
+    return true;
   });
-}
-
-function toSearchable(str: string): string {
-  return str.replace(/\s+/g, '').toLowerCase();
 }
 
 function getDomain(url: string): string {
