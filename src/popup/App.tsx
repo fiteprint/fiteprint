@@ -25,7 +25,7 @@ export default function App(): JSX.Element {
     const tab = await getCurrentTab();
     const domain = getDomain(tab.url);
     const visitedItems = await getVisitedItems(domain);
-    const tabs = await getDomainTabs(domain);
+    const tabs = await getAllTabs();
     const tabMap = tabs.reduce((m: {[key: string]: chrome.tabs.Tab}, tab) => {
       m[tab.url] = tab;
       return m;
@@ -106,11 +106,10 @@ function getCurrentTab(): Promise<chrome.tabs.Tab> {
   });
 }
 
-function getDomainTabs(domain: string): Promise<chrome.tabs.Tab[]> {
+function getAllTabs(): Promise<chrome.tabs.Tab[]> {
   return new Promise(resolve => {
     chrome.tabs.query({
       currentWindow: true,
-      url: domain ? `*://${domain}/*` : '<all_urls>',
     }, resolve);
   });
 }
