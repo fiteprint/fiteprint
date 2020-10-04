@@ -18,6 +18,7 @@ interface Props {
   showIcon: boolean;
   highlight: boolean;
   onClick: (item: ItemData) => void;
+  onMouseMiddleClick: (item: ItemData) => void;
 }
 
 const HALF_SPACE_CHARS = '【（《“‘';
@@ -76,7 +77,7 @@ const Meta = styled.div`
 `;
 
 export default function Item(props: Props): JSX.Element {
-  const { item, showIcon, highlight, onClick } = props;
+  const { item, showIcon, highlight, onClick, onMouseMiddleClick } = props;
 
   const [shouldAdjustMargin, setShouldAdjustMargin] = useState(false);
   useEffect(() => {
@@ -107,11 +108,19 @@ export default function Item(props: Props): JSX.Element {
     onClick(item);
   };
 
+  const handleMouseDown = (event: React.MouseEvent) => {
+    if (event.button === 1) {
+      event.preventDefault();
+      onMouseMiddleClick(item);
+    }
+  };
+
   return (
     <Box
       highlight={highlight}
       title={item.title + '\n' + decodeUrlForShowing(item.url)}
-      onClick={handleClick}>
+      onClick={handleClick}
+      onMouseDown={handleMouseDown}>
       <Title
         highlight={item.tabIndex > -1}
         adjustMargin={!showIcon && shouldAdjustMargin}>

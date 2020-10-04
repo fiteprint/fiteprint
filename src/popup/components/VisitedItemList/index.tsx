@@ -9,6 +9,7 @@ interface Props {
   items: ItemData[];
   total: number;
   showIcon: boolean;
+  domain: string;
 }
 
 const ITEM_HEIGHT = 50;
@@ -30,17 +31,21 @@ export default function VisitedItemList(props: Props): JSX.Element {
     listRef.current.scrollToPosition(0);
   }, [props.items]);
 
-  const openItem = (item: ItemData) => {
+  const openItem = (item: ItemData, mustInNewTab?: boolean) => {
     if (item.tabIndex > -1) {
       chrome.tabs.highlight({
         tabs: item.tabIndex,
       });
-      window.close();
-    } else {
+    } else if (props.domain || mustInNewTab) {
       chrome.tabs.create({
         url: item.url,
       });
+    } else {
+      chrome.tabs.update({
+        url: item.url,
+      });
     }
+    window.close();
   };
 
   const listener = (event: KeyboardEvent) => {
@@ -88,7 +93,8 @@ export default function VisitedItemList(props: Props): JSX.Element {
         item={props.items[index]}
         showIcon={props.showIcon}
         highlight={index === highlightIndex}
-        onClick={openItem}
+        onClick={item => openItem(item)}
+        onMouseMiddleClick={item => openItem(item, true)}
       />
     </div>
   );

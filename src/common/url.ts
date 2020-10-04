@@ -7,7 +7,7 @@ export function getUrlDomain(url: string): string {
 }
 
 export function isChromeUrl(url: string): boolean {
-  return /^chrome:\/\//.test(url);
+  return /^chrome/.test(url);
 }
 
 export function getUrlWithPathOnly(url: string): string {

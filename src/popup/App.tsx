@@ -61,6 +61,7 @@ export default function App(): JSX.Element {
           items={filteredItems}
           total={items.length}
           showIcon={shouldShowIcon}
+          domain={domain}
         />
       }
       {!loading && items.length > 0 &&
