@@ -23,10 +23,11 @@ const Empty = styled.div`
 `;
 
 export default function VisitedItemList(props: Props): JSX.Element {
+  const listRef = useRef<List>(null);
   const [highlightIndex, setHighlightIndex] = useState(-1);
-
   useEffect(() => {
     setHighlightIndex(-1);
+    listRef.current.scrollToPosition(0);
   }, [props.items]);
 
   const openItem = (item: ItemData) => {
@@ -54,7 +55,9 @@ export default function VisitedItemList(props: Props): JSX.Element {
     case 'ArrowUp':
       event.preventDefault();
       setHighlightIndex(index => {
-        return Math.max(index - offset, 0);
+        return index === -1
+          ? props.items.length - 1
+          : Math.max(index - offset, 0);
       });
       break;
     case 'Enter':
@@ -94,6 +97,7 @@ export default function VisitedItemList(props: Props): JSX.Element {
     <>
       {props.total > 0 ?
         <List
+          ref={listRef}
           width={WIDTH}
           height={Math.min(MAX_HEIGHT, props.total * ITEM_HEIGHT)}
           rowHeight={ITEM_HEIGHT}
