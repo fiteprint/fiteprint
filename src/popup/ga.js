@@ -1,7 +1,7 @@
 window.setTimeout(() => {
   window._gaq = window._gaq || [];
   window._gaq.push(['_setAccount', 'UA-61022745-12']);
-  window._gaq.push(['_trackPageview']);
+  window._gaq.push(['_trackPageview', 'popup']);
   
   const ga = document.createElement('script');
   ga.type = 'text/javascript';
