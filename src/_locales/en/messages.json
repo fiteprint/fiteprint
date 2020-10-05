@@ -1,15 +1,15 @@
 {
   "extensionName": {
-    "message": "Fiteprint - Browsing history of current site"
+    "message": "Fiteprint - Quick access to current site history"
   },
   "extensionShortName": {
     "message": "Fiteprint"
   },
   "extensionDescription": {
-    "message": "View your browsing history of current site."
+    "message": "Quick access to current site history."
   },
   "popupTitle": {
-    "message": "View your browsing history of current site."
+    "message": "Quick access to current site history"
   },
   "noTitle": {
     "message": "no title"
