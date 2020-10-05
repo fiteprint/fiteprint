@@ -28,7 +28,7 @@ export default function VisitedItemList(props: Props): JSX.Element {
   const [highlightIndex, setHighlightIndex] = useState(-1);
   useEffect(() => {
     setHighlightIndex(-1);
-    listRef.current.scrollToPosition(0);
+    listRef.current?.scrollToPosition(0);
   }, [props.items]);
 
   const openItem = (item: ItemData, mustInNewTab?: boolean) => {
