@@ -1,20 +1,20 @@
-<div style="text-align: center">
+<p align="center">
   <img alt="icon" src="assets/icon.png" width=100>
-  <div>
-    <a href="https://chrome.google.com/webstore/detail/aifnngnkjcdamfofbfldbnighkjkkmbp">
-      <img alt="Web Store" src="https://img.shields.io/chrome-web-store/v/aifnngnkjcdamfofbfldbnighkjkkmbp?color=blue&label=Chrome%20Web%20Store&style=flat-square">
-    </a>
-    <a href="https://chrome.google.com/webstore/detail/aifnngnkjcdamfofbfldbnighkjkkmbp">
-      <img alt="Web Store" src="https://img.shields.io/chrome-web-store/users/aifnngnkjcdamfofbfldbnighkjkkmbp?color=important&label=Users&style=flat-square">
-    </a>
-    <a href="https://github.com/fiteprint/fiteprint/actions">
-      <img alt="CI" src="https://img.shields.io/github/workflow/status/fiteprint/fiteprint/CI/dev?label=CI&style=flat-square">
-    </a>
-    <a href="https://github.com/fiteprint/fiteprint/graphs/contributors">
-      <img alt="Make with Love" src="https://img.shields.io/static/v1?label=Make%20with&message=Love&color=critical&style=flat-square">
-    </a>
-  </div>
-</div>
+</p>
+<p align="center">
+  <a href="https://chrome.google.com/webstore/detail/aifnngnkjcdamfofbfldbnighkjkkmbp">
+    <img alt="Web Store" src="https://img.shields.io/chrome-web-store/v/aifnngnkjcdamfofbfldbnighkjkkmbp?color=blue&label=Chrome%20Web%20Store&style=flat-square">
+  </a>
+  <a href="https://chrome.google.com/webstore/detail/aifnngnkjcdamfofbfldbnighkjkkmbp">
+    <img alt="Web Store" src="https://img.shields.io/chrome-web-store/users/aifnngnkjcdamfofbfldbnighkjkkmbp?color=important&label=Users&style=flat-square">
+  </a>
+  <a href="https://github.com/fiteprint/fiteprint/actions">
+    <img alt="CI" src="https://img.shields.io/github/workflow/status/fiteprint/fiteprint/CI/dev?label=CI&style=flat-square">
+  </a>
+  <a href="https://github.com/fiteprint/fiteprint/graphs/contributors">
+    <img alt="Make with Love" src="https://img.shields.io/static/v1?label=Make%20with&message=Love&color=critical&style=flat-square">
+  </a>
+</p>
 
 ## Introduction
 
@@ -35,9 +35,9 @@ Hope you enjoy it!
 
 ## Screenshot
 
-<div style="text-align: center">
+<p align="center">
   <img alt="screenshot" src="assets/screenshot.png" width=640>
-</div>
+</p>
 
 ## Development
 
