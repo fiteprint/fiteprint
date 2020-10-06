@@ -32,6 +32,6 @@
     "persistent": true
   },
 
-  "default_locale": "zh_CN",
+  "default_locale": "en",
   "offline_enabled": true
 }
