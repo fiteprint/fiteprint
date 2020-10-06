@@ -12,9 +12,9 @@
 
 Fiteprint is a Chrome browser extension that helps you quickly access context-based history. When you are browsing a website, just click on the icon of this extension to view the history of the current site (don't forget to pin it to the top right corner of browser), if it's a blank new tab, it will show the history of all sites.
 
-The list items display information including title, time, and url, which you can filter by simply typing in keywords.
+The list items display information including title, time, and url. You can filter items by simply typing in keywords.
 
-You can go to `chrome://extensions/shortcuts` and set a shortcut for this extension (e.g. `Ctrl` + `Shift` + `8`) to summon the history list via shortcut keys, then use the following keystrokes:
+If you prefer to use shortcuts, just open `chrome://extensions/shortcuts` and set a shortcut for this extension (e.g. `Ctrl` + `Shift` + `8`) to summon the history list via shortcut keys, then use the following keystrokes:
 
 - Select previous: `ArrowUp`
 - Select next: `ArrowDown`
