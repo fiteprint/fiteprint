@@ -2,18 +2,10 @@
   <img alt="icon" src="assets/icon.png" width=100>
 </p>
 <p align="center">
-  <a href="https://chrome.google.com/webstore/detail/aifnngnkjcdamfofbfldbnighkjkkmbp">
-    <img alt="Web Store" src="https://img.shields.io/chrome-web-store/v/aifnngnkjcdamfofbfldbnighkjkkmbp?color=blue&label=Chrome%20Web%20Store&style=flat-square">
-  </a>
-  <a href="https://chrome.google.com/webstore/detail/aifnngnkjcdamfofbfldbnighkjkkmbp">
-    <img alt="Web Store" src="https://img.shields.io/chrome-web-store/users/aifnngnkjcdamfofbfldbnighkjkkmbp?color=important&label=Users&style=flat-square">
-  </a>
-  <a href="https://github.com/fiteprint/fiteprint/actions">
-    <img alt="CI" src="https://img.shields.io/github/workflow/status/fiteprint/fiteprint/CI/dev?label=CI&style=flat-square">
-  </a>
-  <a href="https://github.com/fiteprint/fiteprint/graphs/contributors">
-    <img alt="Make with Love" src="https://img.shields.io/static/v1?label=Make%20with&message=Love&color=critical&style=flat-square">
-  </a>
+  <a href="https://chrome.google.com/webstore/detail/aifnngnkjcdamfofbfldbnighkjkkmbp"><img alt="Web Store" src="https://img.shields.io/chrome-web-store/v/aifnngnkjcdamfofbfldbnighkjkkmbp?color=blue&label=Chrome%20Web%20Store&style=flat-square"></a>
+  <a href="https://chrome.google.com/webstore/detail/aifnngnkjcdamfofbfldbnighkjkkmbp"><img alt="Web Store" src="https://img.shields.io/chrome-web-store/users/aifnngnkjcdamfofbfldbnighkjkkmbp?color=important&label=Users&style=flat-square"></a>
+  <a href="https://github.com/fiteprint/fiteprint/actions"><img alt="CI" src="https://img.shields.io/github/workflow/status/fiteprint/fiteprint/CI/dev?label=CI&style=flat-square"></a>
+  <a href="https://github.com/fiteprint/fiteprint/graphs/contributors"><img alt="Make with Love" src="https://img.shields.io/static/v1?label=Make%20with&message=Love&color=critical&style=flat-square"></a>
 </p>
 
 ## Introduction
@@ -22,14 +14,14 @@ Fiteprint is a Chrome browser extension that helps you quickly access context-ba
 
 The list items display information including title, time, and url, which you can filter by simply typing in keywords.
 
-You can go to [chrome://extensions/shortcuts](chrome://extensions/shortcuts) and set a shortcut for this extension (e.g. Ctrl + Shift + 8) to summon the history list via shortcut keys, then use the following keystrokes:
+You can go to `chrome://extensions/shortcuts` and set a shortcut for this extension (e.g. `Ctrl` + `Shift` + `8`) to summon the history list via shortcut keys, then use the following keystrokes:
 
-- Select previous: ArrowUp
-- Select next: ArrowDown
-- Quickly jump upwards: Shift + ArrowUp
-- Quickly jump down: Shift + ArrowDown
-- Open: Enter
-- Force open in a new tab: Shift + Enter
+- Select previous: `ArrowUp`
+- Select next: `ArrowDown`
+- Quickly jump upwards: `Shift` + `ArrowUp`
+- Quickly jump down: `Shift` + `ArrowDown`
+- Open: `Enter`
+- Force open in a new tab: `Shift` + `Enter`
 
 Hope you enjoy it!
 
