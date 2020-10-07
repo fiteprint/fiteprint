@@ -76,7 +76,7 @@ async function refreshVistedItems(startTime: number) {
   }
   if (startTime) {
     for (const item of visitedItems) {
-      if (!newUrlItemMap[item.url]) {
+      if (!newKeyItemMap[item.key] && !newUrlItemMap[item.url]) {
         finalItems.push(item);
       }
     }
