@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 
-import { getUrlDomain, isChromeUrl, getUrlWithoutOrigin } from 'common/url';
+import { getUrlWithoutOrigin } from 'common/url';
 import { getVisitedItems } from 'background/bridge';
 import VisitedItemList, { ItemData } from './components/VisitedItemList';
 import FilterBar from './components/FilterBar';
+
+interface Props {
+  domain: string;
+}
 
 const TITLE_SPLITER_REG = /(\s*[|\-·_/]\s*)/;
 const FILTER_DELAY = 300;
@@ -14,26 +18,24 @@ const Placeholder = styled.div`
   height: ${MAX_HEIGHT}px;
 `;
 
-export default function App(): JSX.Element {
+export default function App({ domain }: Props): JSX.Element {
   const [items, setItems] = useState<ItemData[]>([]);
   const [filteredItems, setFilteredItems] = useState<ItemData[]>([]);
   const [shouldShowIcon, setShouldShowIcon] = useState(false);
-  const [domain, setDomain] = useState('');
   const [loading, setLoading] = useState(true);
 
   const init = useCallback(async() => {
-    const tab = await getCurrentTab();
-    const domain = getDomain(tab.url);
     const visitedItems = await getVisitedItems(domain);
     const tabs = await getAllTabs();
     const tabMap = tabs.reduce((m: {[key: string]: chrome.tabs.Tab}, tab) => {
       m[tab.url] = tab;
       return m;
     }, {});
+    const highlightedTab = tabs.find(tab => tab.highlighted);
     const titles = visitedItems.map(item => item.title);
     const suffix = domain ? getTitleSuffix(titles) : '';
     const items = visitedItems
-      .filter(item => item.url !== tab.url)
+      .filter(item => item.url !== highlightedTab?.url)
       .map(item => Object.assign({}, item, {
         shortTitle: removeTitleSuffix(item.title, suffix),
         shortUrl: getShortUrl(item.url, domain),
@@ -42,7 +44,6 @@ export default function App(): JSX.Element {
     setItems(items);
     setFilteredItems(items);
     setShouldShowIcon(!domain);
-    setDomain(domain);
     setLoading(false);
   }, []);
 
@@ -91,19 +92,6 @@ function filterItems(items: ItemData[], value: string): ItemData[] {
       }
     }
     return true;
-  });
-}
-
-function getDomain(url: string): string {
-  return isChromeUrl(url) ? '' : getUrlDomain(url);
-}
-
-function getCurrentTab(): Promise<chrome.tabs.Tab> {
-  return new Promise(resolve => {
-    chrome.tabs.query({
-      currentWindow: true,
-      active: true,
-    }, tabs => resolve(tabs[0]));
   });
 }
 
