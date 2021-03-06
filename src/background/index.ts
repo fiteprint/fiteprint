@@ -36,6 +36,7 @@ const UPDATE_INTERVAL = 1000;
 const REFRESH_DURATION = 1000 * 60 * 5;
 
 const LOOSE_MODE_DOMAINS_KEY = 'looseModeDomains';
+const LOOSE_MODE_DOMAINS_LIMIT = 100;
 
 let visitedItems: VisitedItem[] = [];
 let startTime = 0;
@@ -156,7 +157,7 @@ async function updateMode(domain: string, isStrict: boolean) {
       domains = [mainDomain, ...looseModeDomains];
     }
   }
-  domains = domains.slice(100);
+  domains = domains.slice(0, LOOSE_MODE_DOMAINS_LIMIT - 1);
   await setConfig(LOOSE_MODE_DOMAINS_KEY, domains);
 }
 
