@@ -4,6 +4,7 @@ import {
   getUrlWithPathOnly,
   getUrlOrigin,
   getUrlWithoutOrigin,
+  getMainDomain,
 } from './url';
 
 describe('getUrlDomain', () => {
@@ -66,6 +67,18 @@ describe('getUrlWithoutOrigin', () => {
 
   test('no slash', () => {
     expect(getUrlWithoutOrigin('https://a.b?xxx')).toBe('/?xxx');
+  });
+
+});
+
+describe('getMainDomain', () => {
+
+  test('sub', () => {
+    expect(getMainDomain('c.b.a')).toBe('b.a');
+  });
+
+  test('main', () => {
+    expect(getMainDomain('b.a')).toBe('b.a');
   });
 
 });

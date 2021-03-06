@@ -1,5 +1,5 @@
 import { getHashCode } from 'common/string';
-import { getUrlDomain, getUrlWithPathOnly } from 'common/url';
+import { getUrlDomain, getUrlWithPathOnly, getMainDomain } from 'common/url';
 
 export interface VisitedItem {
   key: number;
@@ -19,10 +19,23 @@ export interface GetVisitedItemsParams {
   limit?: number;
 }
 
+export interface UpdateModeParams {
+  domain: string;
+  isStrict: boolean;
+}
+
+export interface IsStrictModeParams {
+  domain: string;
+}
+
 export const CMD_GET_VISITED_ITEMS = 'getVisitedItems';
+export const CMD_UPDATE_MODE = 'updateMode';
+export const CMD_IS_STRICT_MODE = 'isStrictMode';
 
 const UPDATE_INTERVAL = 1000;
 const REFRESH_DURATION = 1000 * 60 * 5;
+
+const LOOSE_MODE_DOMAINS_KEY = 'looseModeDomains';
 
 let visitedItems: VisitedItem[] = [];
 let startTime = 0;
@@ -41,13 +54,25 @@ chrome.tabs.onUpdated.addListener(() => {
 });
 
 chrome.runtime.onMessage.addListener(
-  ({ cmd, params }: Message<GetVisitedItemsParams>, _, sendResponse) => {
-    if (cmd === CMD_GET_VISITED_ITEMS) {
-      getVisitedItems(params.domain, params.limit).then(sendResponse);
+  (msg: Message<any>, _, sendResponse) => {
+    if (msg.cmd === CMD_GET_VISITED_ITEMS) {
+      const { domain, limit } = msg.params as GetVisitedItemsParams;
+      getVisitedItems(domain, limit).then(sendResponse);
+      return true;
+    }
+    if (msg.cmd === CMD_UPDATE_MODE) {
+      const { domain, isStrict } = msg.params as UpdateModeParams;
+      updateMode(domain, isStrict).then(sendResponse);
+      return true;
+    }
+    if (msg.cmd === CMD_IS_STRICT_MODE) {
+      const { domain } = msg.params as IsStrictModeParams;
+      isStrictMode(domain).then(sendResponse);
       return true;
     }
   }
 );
+
 
 const update = async() => {
   if (active) {
@@ -107,10 +132,47 @@ function toVisitedItem(item: chrome.history.HistoryItem): VisitedItem {
 async function getVisitedItems(domain?: string, limit?: number): Promise<VisitedItem[]> {
   let items = visitedItems;
   if (domain) {
-    items = items.filter(item => item.domain === domain);
+    if (await isStrictMode(domain)) {
+      items = items.filter(item => item.domain === domain);
+    } else {
+      const tail = '.' + getMainDomain(domain);
+      items = items.filter(item => item.domain === domain || item.domain.endsWith(tail));
+    }
   }
   if (limit) {
     items = items.slice(0, limit);
   }
   return items;
+}
+
+async function updateMode(domain: string, isStrict: boolean) {
+  const mainDomain = getMainDomain(domain);
+  const looseModeDomains = await getConfig(LOOSE_MODE_DOMAINS_KEY) || [];
+  let domains = [];
+  if (isStrict) {
+    domains = looseModeDomains.filter((domain: string) => domain != mainDomain);
+  } else {
+    if (!looseModeDomains.includes(mainDomain)) {
+      domains = [mainDomain, ...looseModeDomains];
+    }
+  }
+  await setConfig(LOOSE_MODE_DOMAINS_KEY, domains);
+}
+
+async function isStrictMode(domain: string): Promise<boolean> {
+  const mainDomain = getMainDomain(domain);
+  const looseModeDomains = await getConfig(LOOSE_MODE_DOMAINS_KEY) || [];
+  return !looseModeDomains.includes(mainDomain);
+}
+
+async function setConfig(key: string, value: any) {
+  return new Promise<void>(resolve => {
+    chrome.storage.sync.set({ [key]: value }, () => resolve());
+  });
+}
+
+async function getConfig(key: string): Promise<any> {
+  return new Promise<any>(resolve => {
+    chrome.storage.sync.get([key], res => resolve(res[key]));
+  });
 }

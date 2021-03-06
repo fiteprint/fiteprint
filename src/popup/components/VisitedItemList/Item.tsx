@@ -15,7 +15,6 @@ export interface ItemData {
 
 interface Props {
   item: ItemData;
-  showIcon: boolean;
   highlight: boolean;
   onClick: (item: ItemData) => void;
   onMouseMiddleClick: (item: ItemData) => void;
@@ -54,30 +53,29 @@ interface IconProps {
 
 const Icon = styled.img<IconProps>`
   display: inline-block;
-  margin-right: ${({ adjustMargin }) => adjustMargin ? '' : '0.5em'};
+  margin-right: ${({ adjustMargin }) => adjustMargin ? '0.3em' : '0.8em'};
   width: 1.25em;
   vertical-align: text-bottom;
 `;
 
 interface TitleProps {
   highlight: boolean;
-  adjustMargin: boolean;
 }
 
 const Title = styled.div<TitleProps>`
-  margin-left: ${({ adjustMargin }) => adjustMargin ? '-0.5em' : ''};
   font-weight: ${({ highlight }) => highlight ? 'bold' : ''};
   ${ellipsis}
 `;
 
 const Meta = styled.div`
-  margin-top: 4px;
+  margin-top: 5px;
+  margin-left: 2.05em;
   color: #999;
   ${ellipsis}
 `;
 
 export default function Item(props: Props): JSX.Element {
-  const { item, showIcon, highlight, onClick, onMouseMiddleClick } = props;
+  const { item, highlight, onClick, onMouseMiddleClick } = props;
 
   const [shouldAdjustMargin, setShouldAdjustMargin] = useState(false);
   useEffect(() => {
@@ -118,21 +116,21 @@ export default function Item(props: Props): JSX.Element {
   return (
     <Box
       highlight={highlight}
-      title={item.title + '\n' + decodeUrlForShowing(item.url)}
+      title={[
+        item.title, 
+        decodeUrlForShowing(item.url),
+        '---',
+        formattedDate,
+      ].join('\n')}
       onClick={handleClick}
       onMouseDown={handleMouseDown}>
-      <Title
-        highlight={item.tabIndex > -1}
-        adjustMargin={!showIcon && shouldAdjustMargin}>
-        {showIcon &&
-          <Icon
-            src={iconUrl}
-            adjustMargin={shouldAdjustMargin}
-          />
-        }
+      <Title highlight={item.tabIndex > -1}>
+        <Icon src={iconUrl} adjustMargin={shouldAdjustMargin} />
         {formattedTitle}
       </Title>
-      <Meta>{formattedDate} · {formattedUrl}</Meta>
+      <Meta>
+        {formattedUrl}
+      </Meta>
     </Box>
   );
 }

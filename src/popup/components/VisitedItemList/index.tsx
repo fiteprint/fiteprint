@@ -8,11 +8,10 @@ export { ItemData };
 interface Props {
   items: ItemData[];
   total: number;
-  showIcon: boolean;
   domain: string;
 }
 
-const ITEM_HEIGHT = 50;
+const ITEM_HEIGHT = 55;
 const MAX_HEIGHT = 500;
 const WIDTH = 400;
 
@@ -91,7 +90,6 @@ export default function VisitedItemList(props: Props): JSX.Element {
     <div key={key} style={style}>
       <Item
         item={props.items[index]}
-        showIcon={props.showIcon}
         highlight={index === highlightIndex}
         onClick={item => openItem(item)}
         onMouseMiddleClick={item => openItem(item, true)}
@@ -112,7 +110,7 @@ export default function VisitedItemList(props: Props): JSX.Element {
           scrollToIndex={highlightIndex}
           style={{
             outline: 0,
-            padding: '8px 0',
+            padding: '12px 0',
             boxSizing: 'content-box',
           }}
         />

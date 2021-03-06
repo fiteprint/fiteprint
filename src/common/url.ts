@@ -29,3 +29,7 @@ export function getUrlWithoutOrigin(url: string): string {
     return '';
   }
 }
+
+export function getMainDomain(domain: string): string {
+  return domain.split('.').slice(-2).join('.');
+}

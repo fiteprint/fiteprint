@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 
-import { getUrlWithoutOrigin } from 'common/url';
-import { getVisitedItems } from 'background/bridge';
+import { getVisitedItems, updateMode, isStrictMode } from 'background/bridge';
 import VisitedItemList, { ItemData } from './components/VisitedItemList';
 import FilterBar from './components/FilterBar';
 
@@ -21,12 +20,15 @@ const Placeholder = styled.div`
 export default function App({ domain }: Props): JSX.Element {
   const [items, setItems] = useState<ItemData[]>([]);
   const [filteredItems, setFilteredItems] = useState<ItemData[]>([]);
-  const [shouldShowIcon, setShouldShowIcon] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isStrict, setIsStrict] = useState(true);
 
   const init = useCallback(async() => {
-    const visitedItems = await getVisitedItems(domain);
-    const tabs = await getAllTabs();
+    const [visitedItems, tabs, strict] = await Promise.all([
+      getVisitedItems(domain),
+      getAllTabs(),
+      isStrictMode(domain),
+    ]);
     const tabMap = tabs.reduce((m: {[key: string]: chrome.tabs.Tab}, tab) => {
       m[tab.url] = tab;
       return m;
@@ -43,8 +45,8 @@ export default function App({ domain }: Props): JSX.Element {
       }));
     setItems(items);
     setFilteredItems(items);
-    setShouldShowIcon(!domain);
     setLoading(false);
+    setIsStrict(strict);
   }, []);
 
   useEffect(() => {
@@ -55,21 +57,27 @@ export default function App({ domain }: Props): JSX.Element {
     setFilteredItems(filterItems(items, value));
   }, FILTER_DELAY);
 
+  const handleSwitchMode = async() => {
+    await updateMode(domain, !isStrict);
+    init();
+  };
+
   return (
     <>
       {!loading &&
         <VisitedItemList
           items={filteredItems}
           total={items.length}
-          showIcon={shouldShowIcon}
           domain={domain}
         />
       }
       {!loading && items.length > 0 &&
         <FilterBar
           domain={domain}
-          onInput={handleInput}
-        />
+          isStrict={isStrict}
+          canSwitchMode={!!domain}
+          onSwitchMode={handleSwitchMode}
+          onInput={handleInput} />
       }
       {loading && !domain &&
         <Placeholder />
@@ -129,9 +137,7 @@ function removeTitleSuffix(title: string, suffix: string): string {
 }
 
 function getShortUrl(url: string, domain: string): string {
-  let shortUrl = domain ? getUrlWithoutOrigin(url) : url;
-  shortUrl = shortUrl.replace(/^.*?\/\/(www\.)?|\/$/g, '') || domain;
-  return shortUrl;
+  return url.replace(/^.*?\/\/(www\.)?|\/$/g, '') || domain;
 }
 
 function debounce(fn: (...args: any[]) => void, delay: number) {
