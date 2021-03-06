@@ -156,6 +156,7 @@ async function updateMode(domain: string, isStrict: boolean) {
       domains = [mainDomain, ...looseModeDomains];
     }
   }
+  domains = domains.slice(100);
   await setConfig(LOOSE_MODE_DOMAINS_KEY, domains);
 }
 
